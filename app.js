@@ -10,8 +10,8 @@ var http = require("http")
 var fs = require("fs")
 
 http.createServer(function (req, res) {
-	fs.createReadStream("home.html").pipe(res)
-}).listen(8080)
+	fs.createReadStream("index.html").pipe(res)
+}).listen(5002)
 
 
 var DOMString;
@@ -40,7 +40,7 @@ var server = ws.createServer(function (connection) {
 		//console.log('closed')
 	})
 })
-server.listen(8081)
+server.listen(5003)
 
 function broadcast(str) {
 	server.connections.forEach(function (connection) {
