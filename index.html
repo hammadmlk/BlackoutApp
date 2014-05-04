@@ -144,7 +144,28 @@
       return highlightSearchTerms(searchText, treatAsPhrase, true, highlightStartTag, highlightEndTag);
     }
     
-    searchPrompt('term', true, 'black', 'black');
+    /*searchPrompt('term', true, 'black', 'black');*/
+    alert('Use your mouse to highlight text on this page. All occurances of the highlighted phrase will BlackOut.');
+    
+    /*
+      On mouseup, get the highlighted text. Convert it to string and call highlightSearchTerms
+    */
+    document.onmouseup=function(){
+      var selectedStr = window.getSelection().toString();
+      /*searchPrompt('term', true, 'black', 'black');*/
+      
+      var textColor = 'black';
+      var bgColor = 'black';      
+      var highlightStartTag = '<font style=\'color:' + textColor + '; background-color:' + bgColor + ';\'>';
+      var highlightEndTag = '</font>';
+      
+      if(!selectedStr){
+        return false;
+      }
+      
+      return highlightSearchTerms(selectedStr, true, true, highlightStartTag, highlightEndTag);
+      
+    };
     
 })();">BlackOut</a> 
         <p>Drag the above link to your bookmark bar</p>
