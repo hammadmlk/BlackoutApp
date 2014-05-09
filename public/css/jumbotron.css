@@ -1,0 +1,47 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+ 
+.blackout {
+font-size: 16px;
+position: relative;
+cursor: move;
+background: #000000;
+color: black;
+text-decoration: none !important;
+  color:#000000;
+}
+
+.bookmarklet a{
+font-size: 14px;
+position: relative;
+cursor: move;
+padding: 0.6em 0.8em 0.7em;
+background: #000000;
+color: black;
+text-decoration: none !important;
+line-height: 1em;
+-webkit-font-smoothing: antialiased;
+border-radius: 0.3em;
+display: block;
+float: left;
+clear: both;
+cursor: url("data:None;base64,AAACAAEAICACAAcABQAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAA…//+AD///AA///wAH//4AB//8AAf//AAD//5AA///gAP//4AD//8AF///AB///5A////5///8="), move !important;
+font-family: "adelle-sans", sans-serif;
+}
+
+
+.bookmarkletTip {
+float:left;
+font-size: 16px;
+}
+
+.instructions{
+float:left;
+display: block;
+position: relative;
+
+}
+
