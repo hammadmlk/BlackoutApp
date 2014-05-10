@@ -16,6 +16,7 @@ http.createServer(function (req, res) {
   var pathname = url.parse(req.url).pathname;
   console.log("\n> Request for " + pathname + " received.");
   
+  pathname = "/public" + pathname;
   servePublicFiles(pathname, res, req);
   
 }).listen(5002)
