@@ -2,28 +2,22 @@ fs = require("fs");
 var path = require('path');
 
 var servePublicFiles = function (pathname, response, request) {
+	pathname = "/public" + pathname;
 
 	fs.exists(path.join(__dirname, pathname), function (exists) {
 
+		var isDirectory = false;
 		if (exists) {
+			isDirectory = fs.lstatSync(path.join(__dirname, pathname)).isDirectory();
+		}
 
-			/*Is pathname is directory, append index.html to pathname*/
-			var isDirectory = fs.lstatSync(path.join(__dirname, pathname)).isDirectory();
-      
-      /*if directory, serve index.html of the directory.*/
-			if (isDirectory) {
-				pathname += "/index.html";
-        servePublicFiles(pathname, response, request);
-        return; //return here after a recursive call 
-			}
-
+		if (exists && !isDirectory) {
 			response.writeHead(200, {
 				'Content-Type' : ''
 			});
 			fs.createReadStream('.' + pathname);
 			var stream = fs.createReadStream('.' + pathname).pipe(response);
-		} 
-    else {
+		} else {
 			console.log("No request handle or static file found for " + pathname);
 			response.writeHead(404, {
 				"Content-Type" : "text/html"
