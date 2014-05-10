@@ -2,7 +2,7 @@ fs = require("fs");
 var path = require('path');
 
 var servePublicFiles = function (pathname, response, request) {
-
+  console.log("servePublicFiles "+pathname+" was called.");
 	fs.exists(path.join(__dirname, pathname), function (exists) {
 
 		if (exists) {
