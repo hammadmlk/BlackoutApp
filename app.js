@@ -9,18 +9,27 @@ var ws = require("nodejs-websocket");
 var http = require("http");
 var url = require("url");
 var servePublicFiles = require("./servePublicFiles");
+var requestHandlers = require("./requestHandlers");
 
+/*request handlers */
+handle=[];
+handle["/log"] = requestHandlers.log;
 
 /*The html server. Serves files from public directory*/
 http.createServer(function (req, res) {
-  var pathname = url.parse(req.url).pathname;
-  console.log("\n> Request for " + pathname + " received.");
-  
-  pathname = "/public" + pathname;
-  servePublicFiles(pathname, res, req);
-  
-}).listen(5002)
+	var pathname = url.parse(req.url).pathname;
+	console.log("\n> Request for " + pathname + " received.");
 
+	//if handler exists, call it
+	if (typeof handle[pathname] === 'function') {
+		handle[pathname](req, res);
+	}
+	// if no handler, call servePublicFiles
+	else {
+		pathname = "/public" + pathname;
+		servePublicFiles(pathname, res, req);
+	}
+}).listen(5002)
 
 /*The websocket server*/
 var DOMString;
