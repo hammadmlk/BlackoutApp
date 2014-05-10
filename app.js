@@ -5,15 +5,23 @@
     - for now only one string saved at a time.
 */
 
-var ws = require("nodejs-websocket")
-var http = require("http")
-var fs = require("fs")
+var ws = require("nodejs-websocket");
+var http = require("http");
+var url = require("url");
+var servePublicFiles = require("./servePublicFiles");
 
+
+/*The html server. Serves files from public directory*/
 http.createServer(function (req, res) {
-	fs.createReadStream("index.html").pipe(res)
+  var pathname = url.parse(req.url).pathname;
+  console.log("\n> Request for " + pathname + " received.");
+  
+  servePublicFiles(pathname, res, req);
+  
 }).listen(5002)
 
 
+/*The websocket server*/
 var DOMString;
 
 var server = ws.createServer(function (connection) {
