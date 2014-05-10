@@ -68,7 +68,7 @@ javascript:(function () {
     
     console.log(searchArray);
     for (var i = 0; i < searchArray.length; i++) {
-      if (searchArray[i]!==""){
+      if (searchArray[i]!==''){
         html = doHighlight(html, searchArray[i], highlightStartTag, highlightEndTag);
       }
     }
