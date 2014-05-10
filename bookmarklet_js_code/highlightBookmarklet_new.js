@@ -45,13 +45,27 @@ javascript:(function () {
   	return newText;
   }
   
+  /*
+  *
+  */
+  function get_unique_characters_array( string ){
+    /*TODO: todo*/
+    var unique=[];
+    for(var i=0; i<string.length; i++){
+            unique.push(string[i]);
+    }
+    return unique;
+  }
   
   /*
   * 
   */
   function highlightHtml(html, text, highlightStartTag, highlightEndTag)
   {
-    searchArray = text.split(' ');
+    /*(searchArray = text.split(' ');*/
+    
+    var searchArray = get_unique_characters_array( text );
+    
     console.log(searchArray);
     for (var i = 0; i < searchArray.length; i++) {
       if (searchArray[i]!==""){
