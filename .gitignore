@@ -31,3 +31,4 @@ node_modules
 #More file to ignore
 *.db
 delme.html
+log.txt
