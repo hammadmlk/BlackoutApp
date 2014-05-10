@@ -19,166 +19,68 @@
         <p>Once added, just click the bookmark when visiting any page on which you want to blackout terms.</p>
         <p>You will be asked for the term before blackout</p>
         <p><br/></p>
-        <a class="bookmark" href="javascript:(function() {
+        <a class="bookmark" href="javascript:(function () {
+	alert('Use your mouse to blackout any text on this page.');
+	/*
+	On mouseup
+	get the highlighted range.
+	convert it to string
+	append font tags to string
+	make node elements from this new sting
+	 */
+	document.onmouseup = function () {
 
-    /*
-     * This is the function that actually highlights a text string by
-     * adding HTML tags before and after all occurrences of the search
-     * term. You can pass your own tags if you'd like, or if the
-     * highlightStartTag or highlightEndTag parameters are omitted or
-     * are empty strings then the default <font> tags will be used.
-     */
-    function doHighlight(bodyText, searchTerm, highlightStartTag, highlightEndTag) 
-    {
-      /* the highlightStartTag and highlightEndTag parameters are optional*/
-      if ((!highlightStartTag) || (!highlightEndTag)) {
-        highlightStartTag = '<font style=\'color:blue; background-color:yellow;\'>';
-        highlightEndTag = '</font>';
-      }
-      
-      /* find all occurences of the search term in the given text,
-         and add some 'highlight' tags to them (we're not using a
-         regular expression search, because we want to filter out
-         matches that occur within HTML tags and script blocks, so
-         we have to do a little extra validation)*/
-      var newText = '';
-      var i = -1;
-      var lcSearchTerm = searchTerm.toLowerCase();
-      var lcBodyText = bodyText.toLowerCase();
+		var sel,range;
+    
+    /*If getSelection feature supported*/
+		if (window.getSelection) {
+			/*Get the highlighted selection*/
+			sel = window.getSelection();
+			if (sel.rangeCount) {
+				range = sel.getRangeAt(0);
+				
+				/*get html of selection*/
+				fragment = range.cloneContents();
+				var div = document.createElement('div');
+				div.appendChild(fragment.cloneNode(true));
+				var selectionhtml = div.innerHTML;
+				
+				/*Surround selected html strong with blackout tag*/
+				var textColor = 'black';
+				var bgColor = 'black';
+				var highlightStartTag = '<font style=\'color:' + textColor + ' !important; background-color:' + bgColor + ' !important;\'>';
+				var highlightEndTag = '</font>';
+				var replacementhtml = highlightStartTag + selectionhtml + highlightEndTag;
         
-      while (bodyText.length > 0) {
-        i = lcBodyText.indexOf(lcSearchTerm, i+1);
-        if (i < 0) {
-          newText += bodyText;
-          bodyText = '';
-        } else {
-          /* skip anything inside an HTML tag*/
-          if (bodyText.lastIndexOf('>', i) >= bodyText.lastIndexOf('<', i)) {
-            /* skip anything inside a <script> block*/
-            if (lcBodyText.lastIndexOf('/script>', i) >= lcBodyText.lastIndexOf('<script', i)) {
-              newText += bodyText.substring(0, i) + highlightStartTag + bodyText.substr(i, searchTerm.length) + highlightEndTag;
-              bodyText = bodyText.substr(i + searchTerm.length);
-              lcBodyText = bodyText.toLowerCase();
-              i = -1;
-            }
-          }
-        }
-      }
-      
-      return newText;
-    }
-
-
-    /*
-     * This is sort of a wrapper function to the doHighlight function.
-     * It takes the searchText that you pass, optionally splits it into
-     * separate words, and transforms the text on the current web page.
-     * Only the 'searchText' parameter is required; all other parameters
-     * are optional and can be omitted.
-     */
-    function highlightSearchTerms(searchText, treatAsPhrase, warnOnFailure, highlightStartTag, highlightEndTag)
-    {
-      /* if the treatAsPhrase parameter is true, then we should search for 
-      // the entire phrase that was entered; otherwise, we will split the
-      // search string so that each word is searched for and highlighted
-      // individually*/
-      if (treatAsPhrase) {
-        searchArray = [searchText];
-      } else {
-        searchArray = searchText.split(' ');
-      }
-      
-      if (!document.body || typeof(document.body.innerHTML) == 'undefined') {
-        if (warnOnFailure) {
-          alert('Sorry, for some reason the text of this page is unavailable. Searching will not work.');
-        }
-        return false;
-      }
-      
-      var bodyText = document.body.innerHTML;
-      for (var i = 0; i < searchArray.length; i++) {
-        bodyText = doHighlight(bodyText, searchArray[i], highlightStartTag, highlightEndTag);
-      }
-      
-      document.body.innerHTML = bodyText;
-      return true;
-    }
-
-
-    /*
-     * This displays a dialog box that allows a user to enter their own
-     * search terms to highlight on the page, and then passes the search
-     * text or phrase to the highlightSearchTerms function. All parameters
-     * are optional.
-     */
-    function searchPrompt(defaultText, treatAsPhrase, textColor, bgColor)
-    {
-      /* This function prompts the user for any words that should
-      // be highlighted on this web page*/
-      if (!defaultText) {
-        defaultText = '';
-      }
-      
-      /* we can optionally use our own highlight tag values*/
-      if ((!textColor) || (!bgColor)) {
-        highlightStartTag = '';
-        highlightEndTag = '';
-      } else {
-        highlightStartTag = '<font style=\'color:' + textColor + '; background-color:' + bgColor + ';\'>';
-        highlightEndTag = '</font>';
-      }
-      
-      if (treatAsPhrase) {
-        promptText = 'Please enter the phrase you\'d like to black out:';
-      } else {
-        promptText = 'Please enter the words you\'d like to black out, separated by spaces:';
-      }
-      
-      searchText = prompt(promptText, defaultText);
-
-      if (!searchText)  {
-        alert('No search terms were entered. Exiting function.');
-        return false;
-      }
-      
-      return highlightSearchTerms(searchText, treatAsPhrase, true, highlightStartTag, highlightEndTag);
-    }
-    
-    /*searchPrompt('term', true, 'black', 'black');*/
-    alert('Use your mouse to highlight text on this page. All occurances of the highlighted phrase will BlackOut.');
-    
-    /*
-      On mouseup, get the highlighted text. Convert it to string and call highlightSearchTerms
-    */
-    document.onmouseup=function(){
-      var selectedStr = window.getSelection().toString();
-      /*searchPrompt('term', true, 'black', 'black');*/
-      
-      var textColor = 'black';
-      var bgColor = 'black';      
-      var highlightStartTag = '<font style=\'color:' + textColor + '; background-color:' + bgColor + ';\'>';
-      var highlightEndTag = '</font>';
-      
-      if(!selectedStr){
-        return false;
-      }
-      
-      return highlightSearchTerms(selectedStr, true, true, highlightStartTag, highlightEndTag);
-      
-    };
-    
-})();">BlackOut</a> 
-        <p>Drag the above link to your bookmark bar</p>
-       
-        <br/>
-        <h2>Cool Addons</h2> <p>Save your blackout version to server (saveDOM) and retrieve it later(RetrieveDOM)</p>
+        /*create nodes from replacement html.*/
+				var div2 = document.createElement('div');
+				div2.innerHTML = replacementhtml;
+				var replacementElements = div2.childNodes;
         
-        <a class="bookmark" href="javascript:(function(){var e=document.documentElement.outerHTML;var t=new WebSocket('ws://moodrhythm.com:5003');t.onopen=function(){console.log('Connection opened');t.send('s'+e)};t.onclose=function(){console.log('Connection closed')};t.onerror=function(){console.error('Connection error')};t.onmessage=function(e){console.log(e.data);alert(e.data)}})()
-        ">SaveDom</a>
-        <p>Drag the above link to your bookmark bar</p>
-       
-        <a class="bookmark" href="javascript:(function(){var e=new WebSocket('ws://moodrhythm.com:5003');e.onopen=function(){console.log('Connection opened');e.send('r')};e.onclose=function(){console.log('Connection closed')};e.onerror=function(){console.error('Connection error')};e.onmessage=function(e){console.log('DOM received');document.documentElement.innerHTML=e.data}})()
-        ">RetrieveDom</a>
+        /*recurse for each node with sub nodes?? */
+        
+				/*del old content from range*/
+				range.deleteContents();
+				
+        /*Move nodes from replacementElements to range*/
+				for (var i = replacementElements.length - 1; i >= 0; i--) {
+					range.insertNode(replacementElements[i]);
+				};
+        
+        /*unhighlight/unselect the selected text. */
+        window.getSelection().removeAllRanges();
+			};
+		} else if (document.selection && document.selection.createRange) {
+			alert('Sorry this browser is not supported. Try chrome, safari or IE 9+' );
+      /*range = document.selection.createRange();
+			range.text = replacementText;*/
+		}
+
+		return;
+
+	};
+
+})();">RetrieveDom</a>
        <p>Drag the above link to your bookmark bar</p>
        
     </body>
