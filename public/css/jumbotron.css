@@ -13,6 +13,9 @@ color: black;
 text-decoration: none !important;
   color:#000000;
 }
+.blackout:hover{
+  background:white;
+}
 
 .bookmarklet a{
 font-size: 14px;
