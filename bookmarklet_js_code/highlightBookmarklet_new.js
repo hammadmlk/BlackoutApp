@@ -49,10 +49,13 @@ javascript:(function () {
   *
   */
   function get_unique_characters_array( string ){
-    /*TODO: todo*/
-    var unique=[];
+    var chars={};
     for(var i=0; i<string.length; i++){
-            unique.push(string[i]);
+      chars[string[i]]=1;
+    };
+    var unique = [];
+    for(var cchar in chars){
+      unique.push(cchar);
     }
     return unique;
   }
@@ -87,7 +90,7 @@ javascript:(function () {
 	 */
 	document.onmouseup = function () {
 
-		sel=0;range=0; /*TODO make local*/
+		var sel=0;var range=0;
     
     /*If getSelection feature supported*/
 		if (window.getSelection) {
