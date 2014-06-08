@@ -11,7 +11,7 @@ function log(req, res) {
         'Content-Type' : 'text/plain', 
         'Access-Control-Allow-Origin': '*'
       });
-      res.setHeader("Access-Control-Allow-Origin", "*");
+      //res.setHeader("Access-Control-Allow-Origin", "*");
 			res.write("0");
 			res.end();
 			//throw err;
@@ -21,7 +21,7 @@ function log(req, res) {
 			'Content-Type' : 'text/plain', 
       'Access-Control-Allow-Origin': '*'
 		});
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    //res.setHeader("Access-Control-Allow-Origin", "*");
 		res.write("1");
 		res.end();
 	});
