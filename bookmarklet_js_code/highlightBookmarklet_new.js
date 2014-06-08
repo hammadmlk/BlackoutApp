@@ -1,5 +1,5 @@
 javascript:(function () {
-  "use strict";
+  'use strict';
   /*
    * This is the function that actually highlights a text string by
    * adding HTML tags before and after all occurrences of the search
@@ -86,9 +86,9 @@ javascript:(function () {
   		xmlhttp = new XMLHttpRequest();
   	} else {
   		/*code for IE6, IE5*/
-  		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  		xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
   	}
-  	xmlhttp.open("GET", "http://moodrhythm.com:5002/log?" + data, false);
+  	xmlhttp.open('GET', 'http://moodrhythm.com:5002/log?' + data, false);
   	xmlhttp.send();
   	var xmlDoc = xmlhttp.responseXML;
   }
@@ -96,7 +96,7 @@ javascript:(function () {
   function log() {
   	/*URL*/
   	var curr_url = document.URL;
-  	_log("URL: "curr_url);
+  	_log('URL: '+curr_url);
   }
 
   log();
