@@ -80,24 +80,26 @@ javascript:(function () {
   }
 
   function _log(data) {
-    var xmlhttp;
-  	if (window.XMLHttpRequest) { /*code for IE7+, Firefox, Chrome, Opera, Safari*/
+  	var xmlhttp;
+  	if (window.XMLHttpRequest) {
+  		/*code for IE7+, Firefox, Chrome, Opera, Safari*/
   		xmlhttp = new XMLHttpRequest();
-  	} else { /*code for IE6, IE5*/
+  	} else {
+  		/*code for IE6, IE5*/
   		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
   	}
-  	xmlhttp.open("GET", "http://moodrhythm.com:5002/log?"+data, false);
+  	xmlhttp.open("GET", "http://moodrhythm.com:5002/log?" + data, false);
   	xmlhttp.send();
-  	xmlDoc = xmlhttp.responseXML;
+  	var xmlDoc = xmlhttp.responseXML;
   }
-  
-  function log(){
-    /*URL*/
-    var url = document.URL;
-    
-    _log(url);
-    
+
+  function log() {
+  	/*URL*/
+  	var curr_url = document.URL;
+  	_log("URL: "curr_url);
   }
+
+  log();
   
   /*
   * blackout is global to functions below
