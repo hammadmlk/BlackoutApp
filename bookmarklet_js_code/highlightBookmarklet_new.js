@@ -1,5 +1,5 @@
 javascript:(function () {
-	
+  "use strict";
   /*
    * This is the function that actually highlights a text string by
    * adding HTML tags before and after all occurrences of the search
@@ -79,8 +79,51 @@ javascript:(function () {
     return html;
   }
 
-  alert('Use your mouse to blackout any text on this page.');
+  function _log(data) {
+    var xmlhttp;
+  	if (window.XMLHttpRequest) { /*code for IE7+, Firefox, Chrome, Opera, Safari*/
+  		xmlhttp = new XMLHttpRequest();
+  	} else { /*code for IE6, IE5*/
+  		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  	}
+  	xmlhttp.open("GET", "http://moodrhythm.com:5002/log?"+data, false);
+  	xmlhttp.send();
+  	xmlDoc = xmlhttp.responseXML;
+  }
+  
+  function log(){
+    /*URL*/
+    var url = document.URL;
+    
+    _log(url);
+    
+  }
+  
+  /*
+  * blackout is global to functions below
+  */
+  var blackout = {};
+  blackout.history = {};
+  blackout.history.prev = document.documentElement.outerHTML;
+  
+  /*
+  * 
+  */
+  function undo(){
+    var temp = document.documentElement.outerHTML; /*get current and save*/
+    document.documentElement.innerHTML = blackout.history.prev; /* replace DOM with prev*/
+    blackout.history.prev = temp; /* */ 
+  }
+  
+  alert('Select text with your mouse to black it out. Press key \'u\' to undo.');
 	
+  document.onkeypress = function (e) {
+  	if (e.keyCode == 85 || e.keyCode == 117) {
+  		console.log('undo');
+      undo();
+  	}
+  };
+  
   /*
 	On mouseup
 	get the highlighted range.
@@ -97,11 +140,13 @@ javascript:(function () {
 			/*Get the highlighted selection*/
 			sel = window.getSelection();
 			if (sel.rangeCount) {
+        blackout.history.prev = document.documentElement.outerHTML; /*before change, update history.prev*/
+        
 				range = sel.getRangeAt(0);
 				
 				/*get html and text of selection*/
         var selectiontext = range.toString();
-				fragment = range.cloneContents();
+				var fragment = range.cloneContents();
 				var div = document.createElement('div');
 				div.appendChild(fragment.cloneNode(true));
 				var selectionhtml = div.innerHTML;
@@ -145,5 +190,8 @@ javascript:(function () {
 		return;
 
 	};
-
+  
+  
+  
+  
 })();
