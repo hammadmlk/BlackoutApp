@@ -89,16 +89,21 @@ javascript:(function () {
   		xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
   	}
   	xmlhttp.open('GET', 'http://moodrhythm.com:5002/log?' + data, false);
+    xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
   	xmlhttp.send();
   	var xmlDoc = xmlhttp.responseXML;
   }
 
   function log() {
-  	/*URL*/
-  	var curr_url = document.URL;
-  	_log('URL: '+curr_url);
+  	try {
+      /*URL*/
+  		var curr_url = document.URL;
+      _log('URL: ' + curr_url);
+  	} catch (e) {
+      console.log(e);
+    }
   }
-
+  
   log();
   
   /*
@@ -107,7 +112,8 @@ javascript:(function () {
   var blackout = {};
   blackout.history = {};
   blackout.history.prev = document.documentElement.outerHTML;
-  
+ 
+ 
   /*
   * 
   */
@@ -192,8 +198,6 @@ javascript:(function () {
 		return;
 
 	};
-  
-  
   
   
 })();
